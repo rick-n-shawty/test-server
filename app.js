@@ -50,6 +50,8 @@ app.get('/secret', verify,(req, res) =>{
     res.status(200).json({msg: `hello ${user?.name} ${randomNum}`})
 })
 app.post('/refresh_token', (req, res) =>{
+    console.log('COOKIE',req.cookies)
+    console.log('REQUEST', req)
     const {refreshToken} = req.cookies
     if(!refreshToken) return res.status(401).json({msg: 'log in again sir...'})
     jwt.verify(refreshToken, 'refreshSecret', (err, decoded) =>{
