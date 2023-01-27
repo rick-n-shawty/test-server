@@ -57,8 +57,8 @@ app.post('/refresh_token', (req, res) =>{
             return res.status(403).json({msg: 'refresh token was fucked with'})
         }
         const newAccessToken = jwt.sign({userId: decoded.userId}, 'secret', {expiresIn: '20s'})
-        const newRefreshToken = jwt.sign({userId: decoded.userId}, 'secretRefresh')
-        res.cookie('refreshToken', refreshToken, {httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
+        const newRefreshToken = jwt.sign({userId: decoded.userId}, 'refreshSecret')
+        res.cookie('refreshToken', newRefreshToken, {httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
         res.status(200).json({msg: 'here u go baby',accessToken: newAccessToken})
     })
 })
