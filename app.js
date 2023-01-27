@@ -44,7 +44,7 @@ app.post('/login', (req, res) =>{
     if(password !== user.password) return res.status(403).json({msg: 'wrong password'})
     const accessToken = jwt.sign({userId: user.id}, 'secret', {expiresIn: '20s'})
     const refreshToken = jwt.sign({userId: user.id}, 'refreshSecret')
-    res.cookie('refreshToken', refreshToken, {httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
+    res.cookie('refreshToken', refreshToken, {secure: true, httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
     res.status(200).json({msg:'you logged in', accessToken})
 })
 app.get('/secret', verify,(req, res) =>{
@@ -63,7 +63,7 @@ app.post('/refresh_token', (req, res) =>{
         }
         const newAccessToken = jwt.sign({userId: decoded.userId}, 'secret', {expiresIn: '20s'})
         const newRefreshToken = jwt.sign({userId: decoded.userId}, 'refreshSecret')
-        res.cookie('refreshToken', newRefreshToken, {httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
+        res.cookie('refreshToken', newRefreshToken, {secure: true, httpOnly: true, domain: ".onrender.com", path: '/refresh_token'})
         res.status(200).json({msg: 'here u go baby',accessToken: newAccessToken})
     })
 })
